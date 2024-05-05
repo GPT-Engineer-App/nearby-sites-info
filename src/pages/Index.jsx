@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Container, VStack, Input, Button, Text, Box } from '@chakra-ui/react';
-import axios from 'axios';
 
 const Index = () => {
   const [location, setLocation] = useState('');
@@ -16,8 +15,9 @@ const Index = () => {
     setError('');
     setLoading(true);
     try {
-      const response = await axios.get(`https://en.wikipedia.org/w/api.php?action=query&list=geosearch&gsradius=10000&gscoord=${location}&format=json&origin=*`);
-      setResults(response.data.query.geosearch);
+      const response = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=geosearch&gsradius=10000&gscoord=${location}&format=json&origin=*`);
+      const data = await response.json();
+      setResults(data.query.geosearch);
     } catch (err) {
       setError('Failed to fetch data. Please try again.');
       console.error(err);
